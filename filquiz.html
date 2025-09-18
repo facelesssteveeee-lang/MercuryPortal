@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Not Available for anyone</title>
+    <style>
+        body {
+            font-family: monospace;
+            background-color : #3A3A3A;
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        #quiz-container {
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            border: 2px solid #fff;
+            padding: 20px;
+            background-color: black;
+        }
+
+        h1, h2 {
+            text-transform: uppercase;
+        }
+
+        button {
+            background-color: #fff;
+            color: #000;
+            border: 2px solid #fff;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            font-family: monospace;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            background-color: #ccc;
+        }
+
+        button:disabled {
+            background-color: #333;
+            color: #666;
+            border-color: #666;
+            cursor: not-allowed;
+        }
+
+        #options-container button {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+
+    <div id="quiz-container">
+        <h1>Filipino Quiz</h1>
+        
+        <!-- Welcome Screen -->
+        <div id="welcome-screen">
+            <p>Welcome, please click the button below to start the quiz. Good luck!</p>
+            <button id="start-button">Start Quiz</button>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" style="display: none;">
+            <div>
+                <p id="question-text"></p>
+                <div id="options-container">
+                    <!-- Options will be dynamically added her -->
+                </div>
+            </div>
+            <div>
+                <p>Score: <span id="current-score">0</span></p>
+                <button id="next-button" disabled>Next</button>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" style="display: none;">
+            <h2>Quiz Complete!</h2>
+            <p id="final-score">You scored <span id="score-value">0</span> out of <span id="total-questions">0</span>.</p>
+            <button id="restart-button">Restart Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const quizContainer = document.getElementById('quiz-container');
+            const welcomeScreen = document.getElementById('welcome-screen');
+            const quizScreen = document.getElementById('quiz-screen');
+            const resultScreen = document.getElementById('result-screen');
+            const startButton = document.getElementById('start-button');
+            const nextButton = document.getElementById('next-button');
+            const restartButton = document.getElementById('restart-button');
+            const questionText = document.getElementById('question-text');
+            const optionsContainer = document.getElementById('options-container');
+            const currentScoreSpan = document.getElementById('current-score');
+            const scoreValueSpan = document.getElementById('score-value');
+            const totalQuestionsSpan = document.getElementById('total-questions');
+
+            let currentQuestionIndex = 0;
+            let score = 0;
+
+const questions = [
+    {
+        question: "Ilang taon ang itinalagal ng pananakop ng Kastila sa Pilipinas?",
+        options: ["300", "333", "365", "400"],
+        answer: "333"
+    },
+    {
+        question: "Anong taon nagsimula ang pananakop ng mga Amerikano sa Pilipinas?",
+        options: ["1898", "1901", "1935", "1945"],
+        answer: "1898"
+    },
+    {
+        question: "Ano ang ginamit ng mga Kastila para masakop at magkaroon ng malaking impluwensya sa Pilipinas?",
+        options: ["Relihiyon at Edukasyon", "Militar at Komersyo", "Politika at Ekonomiya", "Sining at Kultura"],
+        answer: "Relihiyon at Edukasyon"
+    },
+    {
+        question: "Anong akdang pampanitikan ang sumasalamin sa kasaysayan ng relihiyon sa panahon ng Kastila?",
+        options: ["Ibong Adarna", "Florante at Laura", "Corridong Ibong Adarna", "Sa Dakong Silangan"],
+        answer: "Corridong Ibong Adarna"
+    },
+    {
+        question: "Sino ang may-akda ng 'Gaya ng estilo ng Florante at Laura' na siyang sumulat din ng 'Sa Dakong Silangan'?",
+        options: ["Huseng Batute", "Jose Corazon de Jesus", "Francisco Balagtas", "Haring Pilipo"],
+        answer: "Jose Corazon de Jesus"
+    },
+    {
+        question: "Sino ang tinatawag na 'Huseng Batute'?",
+        options: ["Francisco Balagtas", "Jose Corazon de Jesus", "Haring Pilipo", "Prinsipe Dollar"],
+        answer: "Jose Corazon de Jesus"
+    },
+    {
+        question: "Sino ang 'matalik na kaibigan' ni Jose Corazon de Jesus?",
+        options: ["Huseng Batute", "Francisco Balagtas", "Prinsesa Mandawa", "Prinsipe Dollar"],
+        answer: "Francisco Balagtas"
+    },
+    {
+        question: "Ano ang paksa ng 'Sa Dakong Silangan' ni Jose Corazon de Jesus?",
+        options: ["Paghahanap ng kalayaan ng bayan", "Kuwento ng pag-ibig", "Kasaysayan ng relihiyon", "Pakikipagsapalaran sa gubat"],
+        answer: "Paghahanap ng kalayaan ng bayan"
+    },
+    {
+        question: "Ano ang naging kinatawan ng nawawalang si Reyna Malaya?",
+        options: ["Ang Ibong Adarna", "Ang kalayaan ng bayan", "Ang Bundok Bendita", "Ang mga Amerikano"],
+        answer: "Ang kalayaan ng bayan"
+    },
+    {
+        question: "Ano ang naging simula ng kasuklaman ng Haring Pilipo sa Ibong Adarna?",
+        options: ["Pagiging malupit at gahaman", "Paggala sa gubat", "Pag-awit ng malungkot", "Pagnanakaw sa kaharian"],
+        answer: "Pagiging malupit at gahaman"
+    },
+    {
+        question: "Ilan ang anak ni Reyna Malaya na binanggit sa akda?",
+        options: ["Dalawa", "Tatlo", "Apat", "Wala"],
+        answer: "Tatlo"
+    },
+    {
+        question: "Sino-sino ang tatlong anak ni Reyna Malaya?",
+        options: ["Prinsesa Mandawa, Prinsesa Bituin, at Prinsesa Luningning", "Prinsipe Dollar, Duke Democrito, at Reyna Malaya", "Ibong Adarna, Haring Pilipo, at Francisco Balagtas", "Wala sa nabanggit"],
+        answer: "Prinsesa Mandawa, Prinsesa Bituin, at Prinsesa Luningning"
+    },
+    {
+        question: "Ano ang sinisimbolo ni Prinsesa Luningning sa akda?",
+        options: ["Ganda", "Bayan", "Kasaysayan", "Lupang Hinirang"],
+        answer: "Bayan"
+    },
+    {
+        question: "Saan natagpuan si Prinsesa Mandawa at Prinsesa Bituin na nakakulong sa kulay-gintong bahay?",
+        options: ["Bundok Bendita", "Sa Dakong Silangan", "Koridor ng Ibong Adarna", "Sa gubat"],
+        answer: "Bundok Bendita"
+    },
+    {
+        question: "Sino ang dumating sa huling bahagi ng akda na sumira sa 'masaya at sana ay wakas' ng kuwento?",
+        options: ["Prinsipe Dollar at Duke Democrito", "Haring Pilipo at ang Ibong Adarna", "Prinsesa Luningning", "Jose Corazon de Jesus"],
+        answer: "Prinsipe Dollar at Duke Democrito"
+    },
+    {
+        question: "Ano ang sumisimbolo sa 'Prinsipe Dollar' at 'Duke Democrito'?",
+        options: ["Bagong mananakop", "Matatalik na kaibigan", "Mga tauhan sa kuwento", "Mga anak ni Reyna Malaya"],
+        answer: "Bagong mananakop"
+    },
+    {
+        question: "Anong uri ng panitikan ang 'Sa Dakong Silangan'?",
+        options: ["Nobela", "Sanaysay", "Tula", "Kuwento"],
+        answer: "Tula"
+    },
+    {
+        question: "Saan nagsimula ang pagpapalaganap ng Kristiyanismo sa Pilipinas?",
+        options: ["Koridong Ibong Adarna", "Pasyon", "Aklat ng Pagsisimba", "Gaya ng estilo ng Florante at Laura"],
+        answer: "Koridong Ibong Adarna"
+    },
+    {
+        question: "Sino ang makatang Pilipino na kilala bilang 'Makata ng Pag-ibig'?",
+        options: ["Jose Corazon de Jesus", "Francisco Balagtas", "Huseng Batute", "Liza Soberano"],
+        answer: "Francisco Balagtas"
+    },
+    {
+        question: "Ano ang pangunahing layunin ng 'Pasyon' sa panahong Kastila?",
+        options: ["Maging aliwan", "Magturo ng Kristiyanismo", "Magbigay-inspirasyon", "Magturo ng kasaysayan"],
+        answer: "Magturo ng Kristiyanismo"
+    },
+    {
+        question: "Anong anyo ng panitikan ang 'Ibong Adarna'?",
+        options: ["Sanaysay", "Nobela", "Korido", "Tula"],
+        answer: "Korido"
+    },
+    {
+        question: "Ano ang naging pangunahing paksa ng panitikan sa panahon ng Kastila?",
+        options: ["Pag-ibig", "Paglalakbay", "Relihiyon", "Kasaysayan"],
+        answer: "Relihiyon"
+    },
+    {
+        question: "Ano ang pamagat ng 'akdang pansimbahan' na binanggit sa teksto?",
+        options: ["Ibong Adarna", "Pasyon", "Florante at Laura", "Aklat ng Pagsisimba"],
+        answer: "Aklat ng Pagsisimba"
+    },
+    {
+        question: "Sino ang tinutukoy ng 'Bagong Mananakop' sa huling bahagi ng akda?",
+        options: ["Kastila", "Hapon", "Amerikano", "Ingles"],
+        answer: "Amerikano"
+    },
+    {
+        question: "Ano ang naging panitikan sa panahon ng mga Amerikano?",
+        options: ["Gaya ng estilo ng Florante at Laura", "Ibong Adarna", "Sa Dakong Silangan", "Pasyon"],
+        answer: "Sa Dakong Silangan"
+    },
+    {
+        question: "Ano ang ibig sabihin ng 'Malubha at karamdaman' sa paglalarawan kay Haring Pilipo?",
+        options: ["May sakit", "Masama ang ugali", "Malupit", "Maraming kaaway"],
+        answer: "Masama ang ugali"
+    },
+    {
+        question: "Ano ang simbolo ng 'Bundok Bendita'?",
+        options: ["Kalayaan", "Pag-asa", "Pagkakakulong", "Yaman"],
+        answer: "Pagkakakulong"
+    },
+    {
+        question: "Ano ang naging inspirasyon ni Jose Corazon de Jesus sa pagsulat ng 'Sa Dakong Silangan'?",
+        options: ["Florante at Laura", "Ibong Adarna", "Pasyon", "Aklat ng Pagsisimba"],
+        answer: "Florante at Laura"
+    },
+    {
+        question: "Ano ang ginamit ng mga Amerikano para masakop ang Pilipinas?",
+        options: ["Armas", "Edukasyon", "Panitikan", "Relihiyon"],
+        answer: "Edukasyon"
+    },
+];
+
+
+
+            const showScreen = (screen) => {
+                welcomeScreen.style.display = 'none';
+                quizScreen.style.display = 'none';
+                resultScreen.style.display = 'none';
+                screen.style.display = 'block';
+            };
+
+            const loadQuestion = () => {
+                const q = questions[currentQuestionIndex];
+                questionText.textContent = q.question;
+                optionsContainer.innerHTML = '';
+                nextButton.disabled = true;
+
+                q.options.forEach(option => {
+                    const optionButton = document.createElement('button');
+                    optionButton.textContent = option;
+                    optionButton.addEventListener('click', () => selectAnswer(option, optionButton));
+                    optionsContainer.appendChild(optionButton);
+                });
+            };
+
+            const selectAnswer = (selectedOption) => {
+                const q = questions[currentQuestionIndex];
+                const isCorrect = selectedOption === q.answer;
+
+                Array.from(optionsContainer.children).forEach(btn => {
+                    btn.disabled = true;
+                });
+
+                if (isCorrect) {
+                    score++;
+                    currentScoreSpan.textContent = score;
+                }
+                
+                nextButton.disabled = false;
+            };
+
+            const showResult = () => {
+                scoreValueSpan.textContent = score;
+                totalQuestionsSpan.textContent = questions.length;
+                showScreen(resultScreen);
+            };
+
+            startButton.addEventListener('click', () => {
+                currentQuestionIndex = 0;
+                score = 0;
+                currentScoreSpan.textContent = score;
+                showScreen(quizScreen);
+                loadQuestion();
+            });
+
+            nextButton.addEventListener('click', () => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    loadQuestion();
+                } else {
+                    showResult();
+                }
+            });
+
+            restartButton.addEventListener('click', () => {
+                showScreen(welcomeScreen);
+            });
+        });
+    </script>
+</body>
+</html>
+
