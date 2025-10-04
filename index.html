@@ -1,32 +1,426 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power Trail - Unplug. Unfold. Unleash.</title>
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font (SF Pro Equivalent) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        /* Define color variables and system font stack for the San Francisco aesthetic */
+        :root {
+            --primary-color: #0b7af8; /* Electric Blue */
+            --dark-color: #1a1a1a;
+            --light-color: #f7f7f7;
+            --grey-color: #4a4a4a; /* Matches the grey/black backpack */
+        }
 
-  <title>🔑 Code Required for Access</title>
-  
-  <!-- HTML -->
+        body {
+            /* Using Inter and system fonts for the San Francisco look */
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, sans-serif;
+            background-color: var(--dark-color);
+            color: var(--light-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-  <!-- Custom Styles -->
-  <link rel="stylesheet" href="style.css">
+        /* Subtle Backpack Float Animation for Hero Image */
+        @keyframes backpackFloat {
+            0% { transform: translateY(0px) rotateX(0deg); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); }
+            50% { transform: translateY(-5px) rotateX(1deg); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4); }
+            100% { transform: translateY(0px) rotateX(0deg); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); }
+        }
+
+        .backpack-float {
+            animation: backpackFloat 5s ease-in-out infinite;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        /* Scroll Reveal Utility Class for Entrance Animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth transition */
+        }
+
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom Styles for Canvas Section */
+        #canvas-container {
+            position: relative;
+            background-color: #222;
+            overflow: hidden;
+        }
+    </style>
 </head>
+<body class="antialiased">
 
-<body>
-  <div class="passcode-container">
-    <h1>Enter Passcode to Continue</h1>
-    <input type="password" id="passcode-input" placeholder="Enter passcode...">
-    <button onclick="checkPasscode()">Submit</button>
-    <p id="feedback-message"></p>
-    <h3>How to get access to this page?</h3>
-    <p>Make sure to have a code for this website as this website resets all codes every week. The codes can only be given by Rica. Each code is randomized and cannot be shared.</p>
-</div>
+    <!-- Store Image URLs in data attributes for easy access -->
+    <div id="image-data" 
+        data-grey="/files/1000023897.jpg"
+        data-red="/files/1000024259.jpg"
+        data-blue="/files/1000024260.jpg"
+        data-white="/files/1000024261.jpg"
+        style="display: none;">
+    </div>
 
+    <!-- Header & Navigation -->
+    <header class="sticky top-0 z-50 bg-black/80 backdrop-blur-md shadow-lg p-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-black tracking-tighter text-white">POWER TRAIL</h1>
+            <nav>
+                <a href="#tech" class="text-sm font-medium hover:text-blue-400 mx-2 md:mx-4 transition">Tech</a>
+                <a href="#shop" class="text-sm font-medium bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded-full transition text-white">Shop Now</a>
+            </nav>
+        </div>
+    </header>
 
-  <!-- Project -->
-  <script src="main.js"></script>
+    <!-- 1. Hero Section -->
+    <section id="hero" class="min-h-screen flex items-center justify-center pt-20 pb-16 px-4 text-center bg-gray-900">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-5xl md:text-7xl font-extrabold tracking-tighter mb-4 scroll-reveal" style="transition-delay: 0.1s;">
+                UNPLUG. <span class="text-blue-500">UNFOLD.</span> UNLEASH.
+            </h2>
+            <p class="text-xl md:text-2xl font-light text-gray-300 mb-10 scroll-reveal" style="transition-delay: 0.2s;">
+                The all-around backpack with integrated **Monocrystalline Solar Panel** technology. Never lose power again.
+            </p>
+
+            <!-- Product Image -->
+            <div class="flex justify-center mb-12 scroll-reveal" style="transition-delay: 0.3s;">
+                <!-- Main image placeholder, set to the default grey color -->
+                <img id="main-product-image" 
+                     src="/files/1000023897.jpg" 
+                     alt="Power Trail Solar Backpack" 
+                     class="backpack-float w-full max-w-sm md:max-w-lg h-auto rounded-xl object-contain shadow-2xl shadow-black/50 transition-all duration-500 ease-in-out" 
+                     style="height: 500px; background-color: var(--grey-color);">
+            </div>
+
+            <!-- CTA -->
+            <a href="#shop" class="inline-block px-10 py-4 text-xl font-bold bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition transform hover:scale-105 scroll-reveal" style="transition-delay: 0.4s;">
+                ⚡ Pre-Order Yours Today
+            </a>
+
+            <!-- Scroll Hint -->
+            <div class="mt-16 text-gray-500 scroll-reveal" style="transition-delay: 0.5s;">
+                Scroll to explore the technology
+            </div>
+        </div>
+    </section>
+    
+    <!-- 2. Color Selector Section -->
+    <section id="color-selector" class="py-16 px-4 bg-gray-900">
+        <div class="max-w-4xl mx-auto text-center scroll-reveal">
+            <h3 class="text-3xl font-extrabold tracking-tight mb-8 text-white">
+                CHOOSE YOUR TRAIL
+            </h3>
+            
+            <div class="flex justify-center space-x-6">
+                <!-- Color Swatch: Grey/Black -->
+                <button onclick="changeColor('grey')" class="color-swatch w-12 h-12 rounded-full border-4 border-gray-400 focus:outline-none transition-all duration-300 hover:scale-110 shadow-lg" style="background-color: #4a4a4a;" data-color-name="Graphite Black" data-color="grey"></button>
+                
+                <!-- Color Swatch: Red/Maroon -->
+                <button onclick="changeColor('red')" class="color-swatch w-12 h-12 rounded-full border-4 border-transparent focus:outline-none transition-all duration-300 hover:scale-110 shadow-lg" style="background-color: #8B0000;" data-color-name="Redstone" data-color="red"></button>
+
+                <!-- Color Swatch: Blue -->
+                <button onclick="changeColor('blue')" class="color-swatch w-12 h-12 rounded-full border-4 border-transparent focus:outline-none transition-all duration-300 hover:scale-110 shadow-lg" style="background-color: #1f3765;" data-color-name="Midnight Blue" data-color="blue"></button>
+
+                <!-- Color Swatch: White/Beige -->
+                <button onclick="changeColor('white')" class="color-swatch w-12 h-12 rounded-full border-4 border-transparent focus:outline-none transition-all duration-300 hover:scale-110 shadow-lg" style="background-color: #E8E2D6;" data-color-name="Desert Cream" data-color="white"></button>
+            </div>
+            
+            <p id="current-color-name" class="text-xl font-semibold mt-4 text-blue-400">Graphite Black</p>
+        </div>
+    </section>
+
+    <!-- 3. Tech Section - CANVAS for Animation -->
+    <section id="tech" class="py-20 md:py-32 px-4 bg-gray-800" id="canvas-section">
+        <div class="max-w-7xl mx-auto">
+            <h3 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-12 text-center scroll-reveal">
+                THE CORE <span class="text-blue-400">TECHNOLOGY</span>
+            </h3>
+
+            <!-- Canvas Container and Content -->
+            <div id="canvas-container" class="rounded-2xl shadow-2xl p-6 md:p-12 scroll-reveal">
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="md:order-2">
+                        <!-- Canvas Element for Solar Flow Animation -->
+                        <canvas id="solar-canvas" class="w-full h-[300px] md:h-[400px] rounded-xl border-4 border-blue-400/50 shadow-inner shadow-black/50"></canvas>
+                        <p class="text-center text-sm mt-3 text-gray-400">Live energy flow simulation: Solar particles feed directly into the internal power bank.</p>
+                    </div>
+
+                    <div class="md:order-1 space-y-8">
+                        <div class="tech-feature">
+                            <h4 class="text-3xl font-bold text-blue-300 mb-2">15W Monocrystalline Panel</h4>
+                            <p class="text-lg text-gray-300">High-efficiency cells capture maximum energy, achieving charging speeds comparable to a standard wall outlet.</p>
+                        </div>
+                        <div class="tech-feature">
+                            <h4 class="text-3xl font-bold text-blue-300 mb-2">Intelli-Charge Regulation</h4>
+                            <p class="text-lg text-gray-300">A built-in chip auto-adjusts power flow to protect your sensitive devices from surges and overcharging.</p>
+                        </div>
+                        <div class="tech-feature">
+                            <h4 class="text-3xl font-bold text-blue-300 mb-2">Water & Scratch Proof</h4>
+                            <p class="text-lg text-gray-300">The panel is sealed under a durable, textured polymer layer, ready for any trail or commute.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Features Section - Utility and Design -->
+    <section id="features" class="py-20 md:py-32 px-4 bg-gray-900">
+        <div class="max-w-7xl mx-auto">
+            <h3 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-16 text-center scroll-reveal">
+                DESIGNED FOR <span class="text-white">EVERY DAY. EVERYWHERE.</span>
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature 1: Anti-Theft -->
+                <div class="bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 scroll-reveal">
+                    <div class="text-4xl text-blue-500 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2">Anti-Theft Security</h4>
+                    <p class="text-gray-400">Hidden zippers, secure pockets, and a luggage strap make travel worry-free. Your gear stays yours.</p>
+                </div>
+                <!-- Feature 2: Laptop Sleeve -->
+                <div class="bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 scroll-reveal" style="transition-delay: 0.1s;">
+                    <div class="text-4xl text-blue-500 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2">17" Laptop Sleeve</h4>
+                    <p class="text-gray-400">Suspended, padded compartment offers superior protection against drops and impacts during your commute.</p>
+                </div>
+                <!-- Feature 3: Ergonomics -->
+                <div class="bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 scroll-reveal" style="transition-delay: 0.2s;">
+                    <div class="text-4xl text-blue-500 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8"><path d="M12 2a5 5 0 0 0-5 5c0 3.75 5 12 5 12s5-8.25 5-12a5 5 0 0 0-5-5z"></path><circle cx="12" cy="7" r="1"></circle></svg>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2">Ergonomic Comfort</h4>
+                    <p class="text-gray-400">Breathable air-mesh back panel and adjustable sternum strap for extended comfort on long hikes or travel days.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Shop / CTA Section -->
+    <section id="shop" class="py-20 md:py-24 px-4 bg-blue-500/10">
+        <div class="max-w-4xl mx-auto text-center scroll-reveal">
+            <h3 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-blue-400">
+                READY TO POWER YOUR JOURNEY?
+            </h3>
+            <p class="text-xl text-gray-300 mb-8">
+                Limited stock remaining for the launch batch. Secure your Power Trail backpack today.
+            </p>
+
+            <a href="#" class="inline-block px-12 py-5 text-2xl font-black bg-blue-500 text-white rounded-full shadow-2xl shadow-blue-500/50 hover:bg-blue-600 transition transform hover:scale-110">
+                BUY NOW FOR $299
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black text-gray-400 py-10 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
+            <p class="text-sm mb-4 md:mb-0">&copy; 2025 Power Trail. All Rights Reserved. | <span class="text-blue-500">Power Meets Performance.</span></p>
+            <div class="flex space-x-6 text-sm">
+                <a href="#" class="hover:text-blue-400 transition">FAQ</a>
+                <a href="#" class="hover:text-blue-400 transition">Contact</a>
+                <a href="#" class="hover:text-blue-400 transition">Privacy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Store image URLs loaded from the data attribute
+        const imageUrls = {
+            grey: document.getElementById('image-data').getAttribute('data-grey'),
+            red: document.getElementById('image-data').getAttribute('data-red'),
+            blue: document.getElementById('image-data').getAttribute('data-blue'),
+            white: document.getElementById('image-data').getAttribute('data-white'),
+        };
+
+        // Get elements once
+        const mainImage = document.getElementById('main-product-image');
+        const colorNameDisplay = document.getElementById('current-color-name');
+        const colorSwatches = document.querySelectorAll('.color-swatch');
+
+        // Function to handle color change when swatch is clicked
+        function changeColor(colorKey) {
+            if (!imageUrls[colorKey]) return; // Safety check
+
+            // 1. Update the main image source
+            mainImage.src = imageUrls[colorKey];
+            mainImage.alt = `Power Trail Solar Backpack in ${colorKey}`;
+            
+            // 2. Update the color name display
+            const selectedSwatch = document.querySelector(`.color-swatch[data-color="${colorKey}"]`);
+            colorNameDisplay.textContent = selectedSwatch ? selectedSwatch.getAttribute('data-color-name') : '';
+
+            // 3. Update active state (border) for swatches
+            colorSwatches.forEach(swatch => {
+                swatch.classList.remove('border-gray-400');
+                swatch.classList.add('border-transparent');
+            });
+            selectedSwatch.classList.add('border-gray-400');
+            selectedSwatch.classList.remove('border-transparent');
+        }
+
+        // === JavaScript for Animations and Canvas ===
+
+        // 1. Scroll Reveal Logic (Intersection Observer)
+        function setupScrollReveal() {
+            const elements = document.querySelectorAll('.scroll-reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, {
+                threshold: 0.1 // Trigger when 10% of the item is visible
+            });
+
+            elements.forEach(el => observer.observe(el));
+        }
+
+        // 2. Solar Canvas Animation Logic
+        function setupSolarCanvas() {
+            const canvas = document.getElementById('solar-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            const particleCount = 40;
+            let animationFrameId;
+
+            // Resizes the canvas to match its container element's size
+            function resizeCanvas() {
+                canvas.width = canvas.clientWidth;
+                canvas.height = canvas.clientHeight;
+
+                // Re-initialize particles to fit new bounds
+                particles = [];
+                for (let i = 0; i < particleCount; i++) {
+                    createParticle();
+                }
+            }
+
+            // Creates a new 'energy' particle
+            function createParticle() {
+                // Particles start in the top center (representing the solar panel area)
+                const x = canvas.width * 0.4 + (Math.random() * canvas.width * 0.2);
+                const y = Math.random() * -100; // Start off-screen above
+                const size = Math.random() * 2 + 1;
+                const speed = Math.random() * 0.5 + 1;
+                const color = `rgba(59, 130, 246, ${Math.random() * 0.6 + 0.4})`; // Electric Blue
+
+                particles.push({ x, y, size, speed, color });
+            }
+
+            // Draw and Update Particles
+            function draw() {
+                // Clear canvas with a very subtle trail effect (low opacity clear)
+                ctx.fillStyle = 'rgba(34, 34, 34, 0.1)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+
+                    // Update position (Flow downwards and add subtle horizontal wobble)
+                    p.y += p.speed;
+                    p.x += Math.sin(p.y * 0.05) * 0.1;
+
+                    // If particle reaches the bottom (the battery), reset it to the top
+                    if (p.y > canvas.height + 10) {
+                        particles.splice(i, 1);
+                        createParticle();
+                        i--;
+                        continue;
+                    }
+
+                    // Draw the particle (a small glowing circle)
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.shadowColor = p.color;
+                    ctx.shadowBlur = p.size * 2; // Add glow effect
+                    ctx.fill();
+                }
+
+                // Draw a simple 'Battery' target at the bottom
+                const batteryW = 60;
+                const batteryH = 35;
+                const batteryX = (canvas.width / 2) - (batteryW / 2);
+                const batteryY = canvas.height - 50;
+
+                // Battery body
+                ctx.shadowBlur = 0;
+                ctx.strokeStyle = '#3b82f6';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(batteryX, batteryY, batteryW, batteryH);
+                ctx.fillStyle = '#1e40af';
+                ctx.fillRect(batteryX + 2, batteryY + 2, batteryW - 4, batteryH - 4);
+                
+                // Battery terminal
+                ctx.fillRect(batteryX + batteryW, batteryY + 8, 5, batteryH - 16); 
+
+                // Battery text
+                ctx.font = 'bold 12px Inter, sans-serif';
+                ctx.fillStyle = 'white';
+                ctx.textAlign = 'center';
+                ctx.fillText('POWER', canvas.width / 2, batteryY + batteryH / 2 + 5);
+            }
+
+            // Main Animation Loop
+            function animate() {
+                draw();
+                animationFrameId = requestAnimationFrame(animate);
+            }
+
+            // Setup Event Listeners and Start
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas(); // Initial size setup
+
+            // Use Intersection Observer to only run the expensive animation when visible
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        if (!animationFrameId) {
+                            animate(); // Start animation when section is visible
+                        }
+                    } else {
+                        if (animationFrameId) {
+                            cancelAnimationFrame(animationFrameId); // Stop when hidden
+                            animationFrameId = null;
+                        }
+                    }
+                });
+            }, {
+                rootMargin: '0px',
+                threshold: 0.1
+            });
+
+            // Start observing the section containing the canvas
+            const canvasSection = document.getElementById('canvas-section');
+            if (canvasSection) {
+                observer.observe(canvasSection);
+            }
+        }
+
+        // Initialization
+        window.onload = function() {
+            setupScrollReveal();
+            setupSolarCanvas();
+            // Initial setup for the color swatches
+            document.querySelector('.color-swatch[data-color="grey"]').classList.add('border-gray-400');
+            document.querySelector('.color-swatch[data-color="grey"]').classList.remove('border-transparent');
+        };
+    </script>
 </body>
-
-
 </html>
+
